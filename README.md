@@ -61,46 +61,52 @@ How resume works
 
 All runs use the same split and metric computation
 
-GRU with attention  
-MSE 2.138222  
-RMSE 1.462266  
-MAE 0.645799  
-R squared 0.161661
+📊 GRU with attention  
+MSE:  2.138222  
+RMSE: 1.462266  
+MAE:  0.645799  
+R²:   0.161661  
 
-BiGRU with attention  
-MSE 2.366343  
-RMSE 1.538292  
-MAE 0.704461  
-R squared 0.072220
+📊 BiGRU with attention  
+MSE:  2.366343  
+RMSE: 1.538292  
+MAE:  0.704461  
+R²:   0.072220  
 
-LSTM with attention  
-MSE 2.256068  
-RMSE 1.502021  
-MAE 0.717862  
-R squared 0.115457
+📊 LSTM with attention  
+MSE:  2.256068  
+RMSE: 1.502021  
+MAE:  0.717862  
+R²:   0.115457  
 
-BiLSTM with attention  
-MSE 2.495132  
-RMSE 1.579599  
-MAE 0.689045  
-R squared 0.021726
+📊 BiLSTM with attention  
+MSE:  2.495132  
+RMSE: 1.579599  
+MAE:  0.689045  
+R²:   0.021726  
 
-deep stacked LSTM with attention five layers  
-MSE 2.208426  
-RMSE 1.486077  
-MAE 0.661851  
-R squared 0.134136
+📊 Deep stacked LSTM with attention five layers  
+MSE:  2.208426  
+RMSE: 1.486077  
+MAE:  0.661851  
+R²:   0.134136  
 
-deep stacked BiLSTM with attention five layers  
-training in progress at the time of writing
+📊 Deep stacked BiLSTM with attention five layers  
+MSE:  2.447349  
+RMSE: 1.564401  
+MAE:  0.697168  
+R²:   0.040460  
 
 ## quick analysis
 
 Summary  
-* GRU with attention currently leads on both error and R squared  
-* deep stacked LSTM with attention is a close second  
-* bidirectional variants did not improve on this split and show higher error which suggests either over capacity or suboptimal regularization for this dataset size and horizon
+* GRU with attention remains the top performer overall with the lowest error and best R².  
+* Deep stacked LSTM with attention is a strong runner up and shows that additional depth can help capture temporal dependencies.  
+* BiGRU and BiLSTM variants consistently underperform their single direction counterparts, with higher error and weaker R², suggesting that bidirectional capacity may not help at this short 10 second horizon.  
+* The deep stacked BiLSTM did not outperform GRU or stacked LSTM and shows only modest gains over shallow BiLSTM, reinforcing that bidirectionality may not be well suited here.  
 
 Interpretation  
-* attention on top of a single direction recurrent encoder seems sufficient for this horizon and feature set  
-* the modest gap between GRU and deep stacked LSTM indicates that deeper temporal mixing helps but may need stronger regularization to avoid noise fitting
+* Attention on top of a single direction recurrent encoder (GRU or LSTM) is sufficient for this horizon and dataset.  
+* Deeper LSTMs bring some benefit, but regularization is key to avoid noise fitting.  
+* The consistently weaker results from bidirectional setups suggest that forward looking context is enough for near term implied volatility prediction, while backward context adds noise.  
+* Among tested models, GRU with attention is the recommended baseline due to its balance of simplicity and accuracy.  
